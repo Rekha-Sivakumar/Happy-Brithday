@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Happy Birthday Hemu!</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    html, body {
+      height: 100%;
+      margin: 0;
+      padding: 0;
+      background: radial-gradient(circle at 60% 40%, #232946 0%, #121629 100%);
+      font-family: 'Segoe UI', sans-serif;
+      overflow: hidden;
+      min-height: 100vh;
+      position: relative;
+      color: #fff;
+    }
+    #fireworks {
+      position: fixed;
+      top: 0;
+      left: 0;
+      z-index: 0;
+      pointer-events: none;
+    }
+    .birthday-heading,
+    .glitter-bg,
+    #balloon-container,
+    .cake,
+    .flash-container {
+      display: none;
+    }
+    .show .birthday-heading,
+    .show .glitter-bg,
+    .show #balloon-container,
+    .show .cake,
+    .show .flash-container {
+      display: block;
+    }
+    .birthday-heading {
+      position: relative;
+      z-index: 10;
+      text-align: center;
+      margin-top: 5vw;
+      margin-bottom: 0;
+      font-size: clamp(2em, 7vw, 3.5em);
+      background: linear-gradient(
+        270deg,
+        #ff8c00,
+        #ff0080,
+        #8a2be2,
+        #00cfff,
+        #00ff99,
+        #ff8c00
+      );
+      background-size: 1200% 1200%;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      color: transparent;
+      animation: gradientMove 6s ease-in-out infinite;
+      text-shadow: 0 2px 8px #fff8;
+      word-break: break-word;
+    }
+    @keyframes gradientMove {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+    .glitter-bg {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      pointer-events: none;
+      z-index: 0;
+      overflow: hidden;
+    }
+    .glitter-dot {
+      position: absolute;
+      border-radius: 50%;
+      opacity: 0.7;
+      pointer-events: none;
+      animation: glitter-flicker 2s infinite;
+    }
+    @keyframes glitter-flicker {
+      0%, 100% { opacity: 0.7; }
+      50% { opacity: 1; }
+    }
+    .cake {
+      position: absolute;
+      left: 50%;
+      top: 32%;
+      transform: translate(-50%, 0);
+      width: 180px;
+      height: 120px;
+      min-width: 180px;
+      min-height: 120px;
+      max-width: 180px;
+      max-height: 120px;
+      z-index: 2;
+    }
+    .cake > * { position: absolute; }
+    .plate {
+      width: 108%;
+      height: 55%;
+      position: absolute;
+      bottom: -10px;
+      left: -4%;
+      background-color: #ccc;
+      border-radius: 50%;
+      box-shadow:
+        0 2px 0 #b3b3b3,
+        0 4px 0 #b3b3b3,
+        0 5px 40px rgba(0, 0, 0, 0.5);
+    }
+    .layer {
+      display: block;
+      width: 100%;
+      height: 50%;
+      border-radius: 50%;
+      background-color: #553c13;
+      box-shadow:
+        0 2px 0px #6a4a18,
+        0 4px 0px #4e330f,
+        0 6px 0px #4c310f,
+        0 8px 0px #4a300e,
+        0 10px 0px #492f0e,
+        0 12px 0px #472e0d,
+        0 14px 0px #462d0d,
+        0 16px 0px #442c0c,
+        0 18px 0px #432b0c,
+        0 20px 0px #412a0b,
+        0 22px 0px #40290b,
+        0 24px 0px #3e280a,
+        0 26px 0px #3d270a,
+        0 28px 0px #3b2609,
+        0 30px 0px #3a2509;
+    }
+    .layer-top { top: 0; }
+    .layer-middle { top: 16.5%; }
+    .layer-bottom { top: 33%; }
+    .icing {
+      top: 1%;
+      left: 2%;
+      background-color: #f0e4d0;
+      width: 96%;
+      height: 45%;
+      border-radius: 50%;
+    }
+    .icing::before {
+      content: "";
+      position: absolute;
+      top: 4px;
+      right: 5px;
+      bottom: 6px;
+      left: 5px;
+      background-color: #f3e8d6;
+      box-shadow:
+        0 0 4px #f5ead8,
+        0 0 4px #f5ead8,
+        0 0 4px #f5ead8;
+      border-radius: 50%;
+      z-index: 1;
+    }
+    .drip {
+      display: block;
+      width: 20%;
+      height: 30%;
+      border-bottom-left-radius: 25px;
+      border-bottom-right-radius: 25px;
+      background-color: #f0e4d0;
+    }
+    .drip1 {
+      top: 27%;
+      left: 2%;
+      transform: skewY(15deg);
+      height: 24%;
+      width: 16%;
+    }
+    .drip2 {
+      top: 34%;
+      left: 72%;
+      transform: skewY(-15deg);
+      width: 16%;
+      height: 24%;
+    }
+    .drip3 {
+      top: 27%;
+      left: 36%;
+      width: 32%;
+      height: 28%;
+      border-bottom-left-radius: 40px;
+      border-bottom-right-radius: 40px;
+    }
+    .candle {
+      background-color: #7B020B;
+      width: 6.5%;
+      height: 25%;
+      border-radius: 8px / 4px;
+      top: -12%;
+      left: 47%;
+      z-index: 10;
+    }
+    .candle::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 30%;
+      border-radius: 50%;
+      background-color: #8b0f17;
+    }
+    .flame {
+      position: absolute;
+      background-color: orange;
+      width: 120%;
+      height: 70%;
+      border-radius: 50% 50% 40% 40% / 80% 80% 40% 40%;
+      top: -70%;
+      left: -10%;
+      z-index: 10;
+      box-shadow:
+        0 0 10px rgba(255, 165, 0, 0.5),
+        0 0 20px rgba(255, 165, 0, 0.5),
+        0 0 60px rgba(255, 165, 0, 0.5),
+        0 0 80px rgba(255, 165, 0, 0.5);
+      transform-origin: 50% 90%;
+      animation: flicker 1s ease-in-out alternate infinite;
+    }
+    @keyframes flicker {
+      0% {
+        transform: skewX(5deg);
+        box-shadow:
+          0 0 10px rgba(255, 165, 0, 0.2),
+          0 0 20px rgba(255, 165, 0, 0.2),
+          0 0 60px rgba(255, 165, 0, 0.2),
+          0 0 80px rgba(255, 165, 0, 0.2);
+      }
+      25% {
+        transform: skewX(-5deg);
+        box-shadow:
+          0 0 10px rgba(255, 165, 0, 0.5),
+          0 0 20px rgba(255, 165, 0, 0.5),
+          0 0 60px rgba(255, 165, 0, 0.5),
+          0 0 80px rgba(255, 165, 0, 0.5);
+      }
+      50% {
+        transform: skewX(10deg);
+        box-shadow:
+          0 0 10px rgba(255, 165, 0, 0.3),
+          0 0 20px rgba(255, 165, 0, 0.3),
+          0 0 60px rgba(255, 165, 0, 0.3),
+          0 0 80px rgba(255, 165, 0, 0.3);
+      }
+      75% {
+        transform: skewX(-10deg);
+        box-shadow:
+          0 0 10px rgba(255, 165, 0, 0.4),
+          0 0 20px rgba(255, 165, 0, 0.4),
+          0 0 60px rgba(255, 165, 0, 0.4),
+          0 0 80px rgba(255, 165, 0, 0.4);
+      }
+      100% {
+        transform: skewX(5deg);
+        box-shadow:
+          0 0 10px rgba(255, 165, 0, 0.5),
+          0 0 20px rgba(255, 165, 0, 0.5),
+          0 0 60px rgba(255, 165, 0, 0.5),
+          0 0 80px rgba(255, 165, 0, 0.5);
+      }
+    }
+    .flash-container {
+      position: absolute;
+      left: 50%;
+      top: 68%;
+      transform: translate(-50%, 0);
+      width: 92vw;
+      max-width: 700px;
+      text-align: center;
+      font-size: clamp(1em, 3vw, 2em);
+      color: #fff;
+      font-weight: bold;
+      text-shadow: 0 2px 8px #000a;
+      z-index: 20;
+      padding: 0;
+      box-shadow: none;
+      filter: none;
+      box-sizing: border-box;
+      line-height: 1.5;
+      display: none;
+      background: none;
+      border-radius: 0;
+    }
+    .show .flash-container {
+      display: block;
+    }
+    .flash-word {
+      display: inline-block;
+      opacity: 0;
+      margin-right: 0.3em;
+      animation: flashIn 0.4s forwards;
+    }
+    @keyframes flashIn {
+      0% { opacity: 0; text-shadow: none; }
+      50% { opacity: 1; text-shadow: 0 0 10px #0ff, 0 0 20px #0ff; }
+      100% { opacity: 1; text-shadow: none; }
+    }
+    .balloon {
+      position: absolute;
+      width: min(100px, 18vw);
+      height: min(140px, 25vw);
+      z-index: 1;
+      pointer-events: none;
+      animation: balloonFloat linear infinite alternate;
+    }
+    @keyframes balloonFloat {
+      0% { transform: translateY(0);}
+      50% { transform: translateY(-40px);}
+      100% { transform: translateY(0);}
+    }
+    .center-btn {
+      position: fixed;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      transform-origin: center;
+      z-index: 100;
+      padding: 1em 2.5em;
+      font-size: 1.5em;
+      background: linear-gradient(90deg, #ff8c00, #ff0080, #8a2be2, #00cfff, #00ff99);
+      color: #fff;
+      border: none;
+      border-radius: 2em;
+      box-shadow: 0 4px 24px #0004;
+      cursor: pointer;
+      transition: background 0.4s, transform 0.2s;
+      font-family: inherit;
+      font-weight: bold;
+      outline: none;
+    }
+    .center-btn:hover {
+      background: linear-gradient(90deg, #00ff99, #00cfff, #8a2be2, #ff0080, #ff8c00);
+      transform: translate(-50%, -50%) scale(1.07);
+    }
+    .show .center-btn {
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <canvas id="fireworks"></canvas>
+  <button class="center-btn" id="showBtn">Click Me</button>
+  <div class="birthday-heading">Happy Birthday Hemu!</div>
+  <div class="glitter-bg"></div>
+  <div id="balloon-container"></div>
+  <div class="cake">
+    <div class="plate"></div>
+    <div class="layer layer-bottom"></div>
+    <div class="layer layer-middle"></div>
+    <div class="layer layer-top"></div>
+    <div class="icing"></div>
+    <div class="drip drip1"></div>
+    <div class="drip drip2"></div>
+    <div class="drip drip3"></div>
+    <div class="candle">
+      <div class="flame"></div>
+    </div>
+  </div>
+  <div class="flash-container" id="flashText"></div>
+  <script>
+    // Fireworks Canvas
+    const canvas = document.getElementById("fireworks");
+    const ctx = canvas.getContext("2d");
+    let cw, ch;
+
+    function resizeCanvas() {
+      cw = canvas.width = window.innerWidth;
+      ch = canvas.height = window.innerHeight;
+    }
+
+    resizeCanvas();
+    window.addEventListener("resize", resizeCanvas);
+
+    class Particle {
+      constructor(x, y, vx, vy, color) {
+        this.x = x;
+        this.y = y;
+        this.vx = vx;
+        this.vy = vy;
+        this.alpha = 1;
+        this.color = color;
+      }
+
+      update() {
+        this.x += this.vx;
+        this.y += this.vy;
+        this.alpha -= 0.01;
+      }
+
+      draw(ctx) {
+        ctx.globalAlpha = this.alpha;
+        ctx.fillStyle = this.color;
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, 3, 0, Math.PI * 2);
+        ctx.fill();
+      }
+    }
+
+    const colors = ["#ff5050", "#ffff66", "#66ff66", "#66ccff", "#cc66ff"];
+    let particles = [];
+
+    function spawnFirework() {
+      const x = Math.random() * cw;
+      const y = Math.random() * ch / 2;
+      for (let i = 0; i < 100; i++) {
+        const angle = Math.random() * 2 * Math.PI;
+        const speed = Math.random() * 5 + 1;
+        const vx = Math.cos(angle) * speed;
+        const vy = Math.sin(angle) * speed;
+        const color = colors[Math.floor(Math.random() * colors.length)];
+        particles.push(new Particle(x, y, vx, vy, color));
+      }
+    }
+
+    function animate() {
+      ctx.clearRect(0, 0, cw, ch);
+      particles = particles.filter(p => p.alpha > 0);
+      for (const p of particles) {
+        p.update();
+        p.draw(ctx);
+      }
+      requestAnimationFrame(animate);
+    }
+
+    // Show everything on button click
+    document.getElementById('showBtn').onclick = function() {
+      document.body.classList.add('show');
+
+      // Clear previous balloons and glitter if any
+      document.getElementById('balloon-container').innerHTML = '';
+      document.querySelector('.glitter-bg').innerHTML = '';
+
+      // Balloons
+      const balloonColors = [
+        ['#8ec6f7', '#4a90e2'],
+        ['#fbc2eb', '#f78fb3'],
+        ['#ffd6a5', '#ffb347'],
+        ['#c3aee7', '#a084ca'],
+        ['#b2f7ef', '#38ada9'],
+        ['#f8a5c2', '#f78fb3'],
+        ['#ffe066', '#ffb347'],
+        ['#a0e7e5', '#00b4d8'],
+        ['#f7b2b7', '#f67280'],
+        ['#b5ead7', '#2ecc71']
+      ];
+      function randomBetween(a, b) { return Math.random() * (b - a) + a; }
+      const balloonContainer = document.getElementById('balloon-container');
+      const balloonCount = window.innerWidth < 700 ? 12 : 32;
+      for(let i=0; i<balloonCount; i++) {
+        const colorIdx = Math.floor(Math.random() * balloonColors.length);
+        const [color1, color2] = balloonColors[colorIdx];
+        const left = randomBetween(0, 100);
+        const top = randomBetween(0, 80);
+        const delay = randomBetween(0, 4);
+        const duration = randomBetween(3, 5);
+        const balloon = document.createElement('div');
+        balloon.className = 'balloon';
+        balloon.style.left = left + 'vw';
+        balloon.style.top = top + 'vh';
+        balloon.style.animationDelay = delay + 's';
+        balloon.style.animationDuration = duration + 's';
+        balloon.innerHTML = `
+          <svg width="100%" height="100%" viewBox="0 0 100 140">
+            <defs>
+              <radialGradient id="b${i}" cx="50%" cy="40%" r="60%">
+                <stop offset="0%" stop-color="#fff"/>
+                <stop offset="60%" stop-color="${color1}"/>
+                <stop offset="100%" stop-color="${color2}"/>
+              </radialGradient>
+            </defs>
+            <ellipse cx="50" cy="60" rx="45" ry="60" fill="url(#b${i})" />
+            <path d="M50 120 Q${50+randomBetween(-10,10)} 130 ${50+randomBetween(-20,20)} 140 Q${50+randomBetween(-10,10)} 150 50 160" stroke="#aaa" stroke-width="4" fill="none"/>
+          </svg>
+        `;
+        balloonContainer.appendChild(balloon);
+      }
+      // Glitters
+      const glitterBg = document.querySelector('.glitter-bg');
+      const glitterCount = window.innerWidth < 700 ? 30 : 80;
+      for (let i = 0; i < glitterCount; i++) {
+        const dot = document.createElement('div');
+        dot.className = 'glitter-dot';
+        const size = Math.random() * 2 + 1.5;
+        dot.style.width = dot.style.height = `${size}px`;
+        dot.style.left = `${Math.random() * 100}vw`;
+        dot.style.top = `${Math.random() * 100}vh`;
+        dot.style.background = `rgba(255,255,255,${Math.random() * 0.7 + 0.3})`;
+        dot.style.boxShadow = `0 0 10px rgba(255, 255, 255, 0.8)`;
+        glitterBg.appendChild(dot);
+      }
+
+      // Start fireworks
+      setInterval(spawnFirework, 1500);
+      animate();
+
+      // Show word-by-word flashing wish
+      const lines = [
+        "We argue, we shout — yet you're my pride",
+        "Happy birthday, brother — I’m always on your side."
+      ];
+      const flashContainer = document.getElementById("flashText");
+      flashContainer.innerHTML = "";
+      let wordIndex = 0;
+      lines.forEach((line, lineIdx) => {
+        const words = line.split(" ");
+        words.forEach((word, i) => {
+          const span = document.createElement("span");
+          span.innerHTML = word;
+          span.className = "flash-word";
+          span.style.animationDelay = `${wordIndex * 0.3}s`;
+          flashContainer.appendChild(span);
+          if (i < words.length - 1) {
+            flashContainer.appendChild(document.createTextNode(" "));
+          }
+          wordIndex++;
+        });
+        if (lineIdx < lines.length - 1) {
+          flashContainer.appendChild(document.createElement("br"));
+        }
+      });
+    };
+  </script>
+</body>
+</html>
